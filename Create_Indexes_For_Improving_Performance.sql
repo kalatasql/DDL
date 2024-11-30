@@ -1,23 +1,25 @@
-
--- Create table InvoiceDetals
--- Invoice id is ID primary key in Invoice table
+-- Create table for invoice details
+-- Invoice_ID is the primary key in the Invoices table, linking the details to the invoice
 
 CREATE TABLE InvoicesDetails
 (
 	ID INT PRIMARY KEY IDENTITY(1,1),
-	Invoice_ID INT NOT NULL FOREIGN KEY REFERENCES Invoices(ID),
-	Material NVARCHAR(255) NOT NULL,
-	Price MONEY NOT NULL,
-	[Order QTY] int not null,
-	[Delivered QTY] int not null,
-    Loaddt DATETIME2 DEFAULT GETDATE()
-) 
+	Invoice_ID INT NOT NULL FOREIGN KEY REFERENCES Invoices(ID),  -- Reference to Invoice table
+	Material NVARCHAR(255) NOT NULL,  -- Material details of the invoice
+	Price MONEY NOT NULL,  -- Price of the material
+	[Order QTY] INT NOT NULL,  -- Quantity ordered
+	[Delivered QTY] INT NOT NULL,  -- Quantity delivered
+    Loaddt DATETIME2 DEFAULT GETDATE()  -- Load date (defaults to current date and time)
+)
 
-CREATE INDEX IDX_InvoicesDetails_Invoice_ID ON InvoicesDetails(Invoice_ID); -- index on invoice_id due to connection with invoice table
+-- Create index on Invoice_ID to optimize join operations with the Invoices table
+CREATE INDEX IDX_InvoicesDetails_Invoice_ID ON InvoicesDetails(Invoice_ID);
 
-CREATE INDEX IDX_InvoicesDetails_Material ON InvoicesDetails(Material); -- index on material due to often search by material
+-- Create index on Material to improve search performance when querying by material
+CREATE INDEX IDX_InvoicesDetails_Material ON InvoicesDetails(Material);
 
-CREATE INDEX IDX_InvoicesDetails_Loaddt ON InvoicesDetails(Loaddt); -- index on date for fast filtering
+-- Create index on Loaddt to improve filtering by date for faster queries
+CREATE INDEX IDX_InvoicesDetails_Loaddt ON InvoicesDetails(Loaddt);
 
---How to drop index? 
+-- Drop the index if it exists (useful for re-creating or renaming)
 -- DROP INDEX IF EXISTS IDX_InvoicesDetails_Invoice_ID ON InvoicesDetails;
